@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Launch Bank (IPv4, bind 10.163.147.29)",
+      "request": "launch",
+      "mainClass": "es.upm.dit.cnvr_fcon.bank_2025.bank.MainBank",
+      "projectName": "2025_Bank_Dist_TBD",
+      "vmArgs": "-Djava.net.preferIPv4Stack=true -Djgroups.bind_addr=10.163.147.29"
+    }
+  ]
+}
