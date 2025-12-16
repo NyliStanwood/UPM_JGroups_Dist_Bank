@@ -7,7 +7,18 @@
       "request": "launch",
       "mainClass": "es.upm.dit.cnvr_fcon.bank_2025.bank.MainBank",
       "projectName": "2025_Bank_Dist_TBD",
-      "vmArgs": "-Djava.net.preferIPv4Stack=true -Djgroups.bind_addr=10.163.147.29"
+      "vmArgs": "-Djava.net.preferIPv4Stack=true -Djgroups.bind_addr=10.163.147.29",
+      "args": "BankCluster"
+    },
+    {
+      "type": "java",
+      "name": "Launch Bank (Localhost Only)",
+      "request": "launch",
+      "mainClass": "es.upm.dit.cnvr_fcon.bank_2025.bank.MainBank",
+      "projectName": "2025_Bank_Dist_TBD",
+      "vmArgs": "-Djava.net.preferIPv4Stack=true -Djgroups.bind_addr=127.0.0.1",
+      "args": "BankCluster",
+      "preLaunchTask": "compile-bank"
     }
   ]
 }
