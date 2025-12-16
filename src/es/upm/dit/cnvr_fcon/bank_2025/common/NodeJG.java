@@ -20,48 +20,54 @@ import java.util.logging.Logger;
 
 /**
  * This class manages the counter and connects in the cluster group.
- * It receives and processes multicast messages. For this purpose, it implements 
- * the org.jgroups.Receiver interface 
+ * It receives and processes multicast messages. For this purpose, it implements
+ * the org.jgroups.Receiver interface
  * 
  * Purpose: Cluster management and message processing
-
-    Joins the process to the JGroups cluster
-    Creates necessary objects
-    Broadcasts service invocations from the menu
-    Processes received messages
-    Implements: org.jgroups.Receiver interface
- 
+ * 
+ * Joins the process to the JGroups cluster
+ * Creates necessary objects
+ * Broadcasts service invocations from the menu
+ * Processes received messages
+ * Implements: org.jgroups.Receiver interface
+ * 
  * 
  * @author aalonso
- * @since 2025/11/12 
+ * @since 2025/11/12
  */
-public class NodeJG implements Receiver{
-
+public class NodeJG implements Receiver {
 
 	// private static final long serialVersionUID = 1L;
 
 	// Create a JGroups node
-	private JChannel channel; 
-	private String user_name=System.getProperty("user.name", "n/a"); 
+	private JChannel channel;
+	private String user_name = System.getProperty("user.name", "n/a");
 	public static Logger LOGGER = Logger.getLogger(MainBank.class.getName());
 
-	//private int key;
-	private Address        addr;
-	private String         localName;
+	// private int key;
+	private Address addr;
+	private String localName;
 	private SendMessages sender;
 	private ServicesBank services;
 	// Create a database
-	final ClientDB         stateDB = new ClientDB();
-	//final ClientDB stateDB = new ClientDB(new Client(13, "13", 13));
+	final ClientDB stateDB = new ClientDB();
+	// final ClientDB stateDB = new ClientDB(new Client(13, "13", 13));
 
-	//	final List<String> state = new LinkedList<>();
+	// final List<String> state = new LinkedList<>();
 
-	private ProcessMsgBank  processMsg;
+	private ProcessMsgBank processMsg;
+
+	// Fault tolerance configuration flags
+	private static final boolean DETECT_MIN_QUORUM = true;
+	private static final boolean CREATE_PROCESS_AUTOMATICALLY = true;
+	private static final int QUORUM = 3;
+	private volatile int currentViewSize = 1;
 
 	/**
-	 * The constructor. It adds the process to the group, by connecting to a 
-	 * channel. It creates all the objects for managing the distributed counter. 
-	 * Initially, it gets the system counter state. 
+	 * The constructor. It adds the process to the group, by connecting to a
+	 * channel. It creates all the objects for managing the distributed counter.
+	 * Initially, it gets the system counter state.
+	 * 
 	 * @param cluster the name of the group cluster
 	 */
 	public NodeJG(String cluster) {
@@ -70,33 +76,30 @@ public class NodeJG implements Receiver{
 		try {
 
 			// TO BE DONE MIRARRR
-        // 1. Crear el canal JGroups (puede ser con config XML )
-        // Si no, el por defecto:
-        channel = new JChannel();
+			// 1. Crear el canal JGroups (puede ser con config XML )
+			// Si no, el por defecto:
+			channel = new JChannel();
 
-        // 2. Este objeto (NodeJG) será el receptor de mensajes y de estado
-        channel.setReceiver(this);
+			// 2. Este objeto (NodeJG) será el receptor de mensajes y de estado
+			channel.setReceiver(this);
 
-        // 3. Conectarse al cluster (nombre que viene por parámetro)
-        channel.connect(cluster);
+			// 3. Conectarse al cluster (nombre que viene por parámetro)
+			channel.connect(cluster);
 
-        // 4. Guardar dirección local (opcional pero útil para logs)
-        addr = channel.getAddress();
-        localName = addr.toString();
-        LOGGER.info("Joined cluster " + cluster + " with address " + localName);
+			// 4. Guardar dirección local (opcional pero útil para logs)
+			addr = channel.getAddress();
+			localName = addr.toString();
+			LOGGER.info("Joined cluster " + cluster + " with address " + localName);
 
-        // 5. Crear el objeto que envía mensajes
-        sender = new SendMessages(channel);
+			// 5. Crear el objeto que envía mensajes
+			sender = new SendMessages(channel);
 
-        // 6. Crear la capa de servicios del banco
-		services = new ServicesBank(sender, stateDB, localName);
+			// 6. Crear la capa de servicios del banco
+			services = new ServicesBank(sender, stateDB, localName);
 
-        // 7. Crear el procesador de mensajes entrantes
-		processMsg = new ProcessMsgBank(stateDB, localName);
+			// 7. Crear el procesador de mensajes entrantes
+			processMsg = new ProcessMsgBank(stateDB, localName);
 
-
-
-			
 		} catch (Exception e) {
 			System.out.println("Error to create the JGroups channel");
 			e.printStackTrace();
@@ -105,9 +108,9 @@ public class NodeJG implements Receiver{
 
 		try {
 			// Configure the state when working the rest system
-			//this.channel.getState(null, 10000);
-		    // 8. Pedir el estado actual al cluster (si ya hay algún nodo)
-             channel.getState(null, 10000);
+			// this.channel.getState(null, 10000);
+			// 8. Pedir el estado actual al cluster (si ya hay algún nodo)
+			channel.getState(null, 10000);
 		} catch (Exception e) {
 			System.out.println("Error get the State");
 			e.printStackTrace();
@@ -120,9 +123,117 @@ public class NodeJG implements Receiver{
 	 * This method implements in the org.jgroups.receiver interface
 	 * Called when a change in membership has occurred. (JGroups)
 	 * View - the received view
+	 * 
+	 * FAULT TOLERANCE: Detects view changes and handles node failures
 	 */
 	public void viewAccepted(View new_view) {
 		System.out.println("** view: " + new_view);
+		currentViewSize = new_view.getMembers().size();
+
+		// FAULT TOLERANCE: Check if quorum is maintained
+		if (DETECT_MIN_QUORUM) {
+			LOGGER.info("Current view size: " + currentViewSize + " / Required quorum: " + QUORUM);
+
+			if (currentViewSize < QUORUM) {
+				LOGGER.warning("⚠️  QUORUM LOST! Current: " + currentViewSize + " < Required: " + QUORUM);
+				LOGGER.warning("System integrity compromised. Attempting recovery...");
+
+				if (CREATE_PROCESS_AUTOMATICALLY) {
+					// Send alert message to all nodes
+					sendQuorumLostAlert();
+
+					// Schedule automatic process recovery
+					scheduleProcessRecovery();
+				}
+			} else {
+				LOGGER.info("✓ Quorum maintained: " + currentViewSize + " >= " + QUORUM);
+			}
+		}
+	}
+
+	/**
+	 * Sends an alert message when quorum is lost
+	 */
+	private void sendQuorumLostAlert() {
+		try {
+			String alertMsg = "[ALERT] Node " + localName + " detected quorum loss at " +
+					System.currentTimeMillis() + ". Current members: " + currentViewSize;
+			LOGGER.warning(alertMsg);
+			System.out.println("🔔 " + alertMsg);
+		} catch (Exception e) {
+			LOGGER.severe("Error sending quorum lost alert: " + e.getMessage());
+		}
+	}
+
+	/**
+	 * Schedules automatic process recovery when quorum is lost
+	 */
+	private void scheduleProcessRecovery() {
+		if (!CREATE_PROCESS_AUTOMATICALLY) {
+			return;
+		}
+
+		// Run recovery in a separate thread to avoid blocking the receiver thread
+		Thread recoveryThread = new Thread(() -> {
+			try {
+				int missingProcesses = QUORUM - currentViewSize;
+				LOGGER.info("Attempting to recover " + missingProcesses + " process(es)...");
+
+				for (int i = 0; i < missingProcesses; i++) {
+					Thread.sleep(2000); // Wait 2 seconds between process launches
+					// Check if quorum was restored during the wait
+					if (currentViewSize >= QUORUM) {
+						LOGGER.info("✓ Quorum already restored (" + currentViewSize + " >= " + QUORUM
+								+ "). Stopping recovery.");
+						break;
+					}
+					int attempt = i + 1;
+					LOGGER.info("Recovery attempt " + attempt + "/" + missingProcesses);
+
+					// Launch new process in a separate JVM
+					try {
+						launchNewBankProcess();
+						LOGGER.info("✓ New process launched successfully");
+					} catch (Exception e) {
+						LOGGER.severe("✗ Failed to launch new process: " + e.getMessage());
+					}
+				}
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+				LOGGER.severe("Recovery thread interrupted: " + e.getMessage());
+			}
+		}, "ProcessRecoveryThread");
+
+		recoveryThread.setDaemon(false);
+		recoveryThread.start();
+	}
+
+	/**
+	 * Launches a new bank process automatically
+	 * This method spawns a new JVM running another MainBank instance
+	 */
+	private void launchNewBankProcess() throws Exception {
+		String javaHome = System.getProperty("java.home");
+		String javaBin = javaHome + "/bin/java";
+		String classpath = System.getProperty("java.class.path");
+		String mainClass = "es.upm.dit.cnvr_fcon.bank_2025.bank.MainBank";
+		String clusterName = "BankCluster"; // Get cluster name dynamically if needed
+
+		ProcessBuilder pb = new ProcessBuilder(
+				javaBin,
+				"-cp", classpath,
+				"-Djava.net.preferIPv4Stack=true",
+				"-Djgroups.bind_addr=127.0.0.1",
+				mainClass,
+				clusterName);
+
+		// Redirect output to console so we can see the new process
+		pb.inheritIO();
+
+		LOGGER.info("Spawning new process: " + String.join(" ", pb.command()));
+		Process process = pb.start();
+
+		LOGGER.info("New process started with PID: " + process.pid());
 	}
 
 	/**
@@ -132,56 +243,55 @@ public class NodeJG implements Receiver{
 	 */
 	public void receive(Message msg) {
 		try {
-		//Sacar el objeto del Message. 
-		LOGGER.fine("Message received from " + msg.getSrc());
+			// Sacar el objeto del Message.
+			LOGGER.fine("Message received from " + msg.getSrc());
 
-        Object obj = msg.getObject();
+			Object obj = msg.getObject();
 
-        // Aseguramos que el mensaje es del tipo esperado
-        if (!(obj instanceof OperationsBank)) {
-            LOGGER.severe("Received object is not an OperationsBank: ");
-            return;
-        }
-		//Hacer cast a OperationsBank.
-        OperationsBank op = (OperationsBank) obj;
-		
-		
-		// usar synchronized para acceso a la BD compartida
-        synchronized (stateDB) {
-            // Procesar la operación sobre la BD
-            Client result = processMsg.processOpn(op);
+			// Aseguramos que el mensaje es del tipo esperado
+			if (!(obj instanceof OperationsBank)) {
+				LOGGER.severe("Received object is not an OperationsBank: ");
+				return;
+			}
+			// Hacer cast a OperationsBank.
+			OperationsBank op = (OperationsBank) obj;
 
-            // Opcional: logs para depuración
-            if (result != null) {
-                LOGGER.fine("Operation " + op.getOperation() + " processed for client: " + result);
-            } else {
-                LOGGER.fine("Operation " + op.getOperation() + " could not be processed");
-            }
-        }
+			// usar synchronized para acceso a la BD compartida
+			synchronized (stateDB) {
+				// Procesar la operación sobre la BD
+				Client result = processMsg.processOpn(op);
 
-    } catch (Exception e) {
-        System.out.println("Error processing received message");
-        e.printStackTrace();
-        System.out.println(e);
-    }
-  }
-		
+				// Opcional: logs para depuración
+				if (result != null) {
+					LOGGER.fine("Operation " + op.getOperation() + " processed for client: " + result);
+				} else {
+					LOGGER.fine("Operation " + op.getOperation() + " could not be processed");
+				}
+			}
+
+		} catch (Exception e) {
+			System.out.println("Error processing received message");
+			e.printStackTrace();
+			System.out.println(e);
+		}
+	}
 
 	/**
 	 * This method implements in the org.jgroups.receiver interface
-	 * Allows an application to write a state through a provided OutputStream. 
-	 * After the state has been written the OutputStream doesn't need to 
-	 * be closed as stream closing is automatically done when a calling thread 
+	 * Allows an application to write a state through a provided OutputStream.
+	 * After the state has been written the OutputStream doesn't need to
+	 * be closed as stream closing is automatically done when a calling thread
 	 * returns from this callback (JGroups).
+	 * 
 	 * @param output - the OutputStream
 	 */
 	public void getState(OutputStream output) throws Exception {
 		LOGGER.finest("Invocation to getState");
-		synchronized(stateDB) {
+		synchronized (stateDB) {
 			try {
-				// Configure the state when working the rest system    		
-			   // Enviar el estado completo de la BD de clientes al nodo que lo pide
-                Util.objectToStream(stateDB, new DataOutputStream(output));
+				// Configure the state when working the rest system
+				// Enviar el estado completo de la BD de clientes al nodo que lo pide
+				Util.objectToStream(stateDB, new DataOutputStream(output));
 			} catch (Exception e) {
 				System.err.println(e);
 				e.printStackTrace();
@@ -191,23 +301,23 @@ public class NodeJG implements Receiver{
 
 	/**
 	 * This method implements in the org.jgroups.receiver interface
-	 * Allows an application to read a state through a provided InputStream. 
-	 * After the state has been read the InputStream doesn't need to be 
-	 * closed as stream closing is automatically done when a calling 
+	 * Allows an application to read a state through a provided InputStream.
+	 * After the state has been read the InputStream doesn't need to be
+	 * closed as stream closing is automatically done when a calling
 	 * thread returns from this callback (JGroups).
 	 * 
-	 *  @param input - the InputStream
+	 * @param input - the InputStream
 	 */
 	public void setState(InputStream input) throws Exception {
 		LOGGER.finest("Invocation to setState");
-		//List<String> list=Util.objectFromStream(new DataInputStream(input));
+		// List<String> list=Util.objectFromStream(new DataInputStream(input));
 		ClientDB clientDBinput = Util.objectFromStream(new DataInputStream(input));
-		synchronized(stateDB) {
+		synchronized (stateDB) {
 			try {
-				// Configure the state when working the rest system		
+				// Configure the state when working the rest system
 				// TO BE DONE
 				// Copiar el estado recibido en nuestra BD local
-                stateDB.createBank(clientDBinput);
+				stateDB.createBank(clientDBinput);
 
 			} catch (Exception e) {
 				System.out.println("Error to set the state");
@@ -215,8 +325,9 @@ public class NodeJG implements Receiver{
 				System.out.println(e);
 			}
 		}
-		//System.out.println("received state (" + list.size() + " messages in chat history):");
-		//list.forEach(System.out::println);
+		// System.out.println("received state (" + list.size() + " messages in chat
+		// history):");
+		// list.forEach(System.out::println);
 
 		System.out.println("received state (" + " messages in chat history):");
 	}
@@ -229,22 +340,58 @@ public class NodeJG implements Receiver{
 	}
 
 	// The MainCounter requires this object
-	/** 
+	/**
 	 * This method returns the service object in this class. It is used by
 	 * MainCounter for invoking the system counter, from the client menu.
+	 * 
 	 * @return Counter system services.
 	 */
 	public ServicesBank getServices() {
 		return this.services;
 	}
 
-	
 	/**
 	 * Get a String with the contents of the DB
+	 * 
 	 * @return the content of the DB
 	 */
 	public String clientDBString() {
 		return stateDB.toString();
 	}
 
+	/**
+	 * FAULT TOLERANCE: Get current view size
+	 * 
+	 * @return the number of nodes in the current view
+	 */
+	public int getCurrentViewSize() {
+		return currentViewSize;
+	}
+
+	/**
+	 * FAULT TOLERANCE: Check if minimum quorum is met
+	 * 
+	 * @return true if current view size >= QUORUM, false otherwise
+	 */
+	public boolean isQuorumMaintained() {
+		return currentViewSize >= QUORUM;
+	}
+
+	/**
+	 * FAULT TOLERANCE: Get quorum threshold
+	 * 
+	 * @return the required minimum number of nodes
+	 */
+	public int getQuorumThreshold() {
+		return QUORUM;
+	}
+
+	/**
+	 * FAULT TOLERANCE: Check if automatic recovery is enabled
+	 * 
+	 * @return true if CREATE_PROCESS_AUTOMATICALLY flag is set
+	 */
+	public boolean isAutoRecoveryEnabled() {
+		return CREATE_PROCESS_AUTOMATICALLY;
+	}
 }
