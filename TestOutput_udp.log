@@ -1,0 +1,201 @@
+ java -cp "bin;lib\jgroups-5.0.0.Final.jar" -Djava.net.preferIPv4Stack=true -Djgroups.bind_addr=127.0.0.1 es.upm.dit.cnvr_fcon.bank_2025.bank.MainBank BankCluster
+[2025-12-16 16:39:05][INFO   ] [Using JGroups UDP configuration with optimized fault detection] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG <init>] 
+[2025-12-16 16:39:05][INFO   ] [Using JGroups UDP configuration with optimized fault detection] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG <init>] 
+[2025-12-16 16:39:05][INFO   ] [local_addr: b4e35be7-8670-bb44-bd83-1d49b775f014, name: LAPTOP-NYLI1-13482] [org.jgroups.JChannel setAddress] 
+
+-------------------------------------------------------------------
+GMS: address=LAPTOP-NYLI1-13482, cluster=clusterBank, physical address=127.0.0.1:49665
+-------------------------------------------------------------------
+[2025-12-16 16:39:08][INFO   ] [LAPTOP-NYLI1-13482: no members discovered after 3013 ms: creating cluster as coordinator] [org.jgroups.protocols.pbcast.ClientGmsImpl joinInternal] 
+** view: [LAPTOP-NYLI1-13482|0] (1) [LAPTOP-NYLI1-13482]
+[2025-12-16 16:39:08][INFO   ] [Current view size: 1 / Required quorum: 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted] 
+[2025-12-16 16:39:08][INFO   ] [Current view size: 1 / Required quorum: 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted] 
+[2025-12-16 16:39:08][WARNING] [??  QUORUM LOST! Current: 1 < Required: 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted] 
+[2025-12-16 16:39:08][WARNING] [??  QUORUM LOST! Current: 1 < Required: 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted] 
+[2025-12-16 16:39:08][WARNING] [System integrity compromised. Attempting recovery...] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted] 
+[2025-12-16 16:39:08][WARNING] [System integrity compromised. Attempting recovery...] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted] 
+[2025-12-16 16:39:08][WARNING] [[ALERT] Node null detected quorum loss at 1765899548947. Current members: 1] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG sendQuorumLostAlert] 
+[2025-12-16 16:39:08][WARNING] [[ALERT] Node null detected quorum loss at 1765899548947. Current members: 1] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG sendQuorumLostAlert] 
+? [ALERT] Node null detected quorum loss at 1765899548947. Current members: 1
+[2025-12-16 16:39:08][INFO   ] [Attempting to recover 2 process(es)...] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG lambda$0] 
+[2025-12-16 16:39:08][INFO   ] [Attempting to recover 2 process(es)...] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG lambda$0] 
+[2025-12-16 16:39:08][INFO   ] [Joined cluster clusterBank with address LAPTOP-NYLI1-13482] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG <init>] 
+[2025-12-16 16:39:08][INFO   ] [Joined cluster clusterBank with address LAPTOP-NYLI1-13482] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG <init>] 
+>>> Enter option: 1) Put. 2) Get. 3) Remove. 4) Update  5) Values 7) Init 0) Exit
+[2025-12-16 16:39:10][INFO   ] [Recovery attempt 1/2] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG lambda$0] 
+[2025-12-16 16:39:10][INFO   ] [Recovery attempt 1/2] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG lambda$0] 
+[2025-12-16 16:39:10][INFO   ] [Spawning new process: C:\Program Files\Java\jdk-23/bin/java -cp bin;lib\jgroups-5.0.0.Final.jar -Djava.net.preferIPv4Stack=true -Djgroups.bind_addr=127.0.0.1 es.upm.dit.cnvr_fcon.bank_2025.bank.MainBank BankCluster] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG launchNewBankProcess] 
+[2025-12-16 16:39:10][INFO   ] [Spawning new process: C:\Program Files\Java\jdk-23/bin/java -cp bin;lib\jgroups-5.0.0.Final.jar -Djava.net.preferIPv4Stack=true -Djgroups.bind_addr=127.0.0.1 es.upm.dit.cnvr_fcon.bank_2025.bank.MainBank BankCluster] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG launchNewBankProcess] 
+[2025-12-16 16:39:10][INFO   ] [New process started with PID: 16404] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG launchNewBankProcess] 
+[2025-12-16 16:39:10][INFO   ] [New process started with PID: 16404] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG launchNewBankProcess]
+[2025-12-16 16:39:10][INFO   ] [? New process launched successfully] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG lambda$0]
+[2025-12-16 16:39:10][INFO   ] [? New process launched successfully] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG lambda$0]
+[2025-12-16 16:39:11][INFO   ] [Using JGroups UDP configuration with optimized fault detection] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG <init>] 
+[2025-12-16 16:39:11][INFO   ] [Using JGroups UDP configuration with optimized fault detection] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG <init>] 
+[2025-12-16 16:39:11][INFO   ] [local_addr: 0544e66e-ca92-3a2d-adbf-d604756d5805, name: LAPTOP-NYLI1-43682] [org.jgroups.JChannel setAddress] 
+
+-------------------------------------------------------------------
+GMS: address=LAPTOP-NYLI1-43682, cluster=clusterBank, physical address=127.0.0.1:49667
+-------------------------------------------------------------------
+** view: [LAPTOP-NYLI1-13482|1] (2) [LAPTOP-NYLI1-13482, LAPTOP-NYLI1-43682]
+[2025-12-16 16:39:11][INFO   ] [Current view size: 2 / Required quorum: 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted] 
+[2025-12-16 16:39:11][INFO   ] [Current view size: 2 / Required quorum: 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:39:11][WARNING] [??  QUORUM LOST! Current: 2 < Required: 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:39:11][WARNING] [??  QUORUM LOST! Current: 2 < Required: 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:39:11][WARNING] [System integrity compromised. Attempting recovery...] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:39:11][WARNING] [System integrity compromised. Attempting recovery...] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:39:11][WARNING] [[ALERT] Node LAPTOP-NYLI1-13482 detected quorum loss at 1765899551792. Current members: 2] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG sendQuorumLostAlert]
+[2025-12-16 16:39:11][WARNING] [[ALERT] Node LAPTOP-NYLI1-13482 detected quorum loss at 1765899551792. Current members: 2] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG sendQuorumLostAlert]
+? [ALERT] Node LAPTOP-NYLI1-13482 detected quorum loss at 1765899551792. Current members: 2
+[2025-12-16 16:39:11][INFO   ] [Attempting to recover 1 process(es)...] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG lambda$0]
+[2025-12-16 16:39:11][INFO   ] [Attempting to recover 1 process(es)...] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG lambda$0]
+** view: [LAPTOP-NYLI1-13482|1] (2) [LAPTOP-NYLI1-13482, LAPTOP-NYLI1-43682]
+[2025-12-16 16:39:11][INFO   ] [Current view size: 2 / Required quorum: 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted] 
+[2025-12-16 16:39:11][INFO   ] [Current view size: 2 / Required quorum: 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:39:11][WARNING] [??  QUORUM LOST! Current: 2 < Required: 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:39:11][WARNING] [??  QUORUM LOST! Current: 2 < Required: 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:39:11][WARNING] [System integrity compromised. Attempting recovery...] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:39:11][WARNING] [System integrity compromised. Attempting recovery...] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:39:11][WARNING] [[ALERT] Node null detected quorum loss at 1765899551831. Current members: 2] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG sendQuorumLostAlert]
+[2025-12-16 16:39:11][WARNING] [[ALERT] Node null detected quorum loss at 1765899551831. Current members: 2] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG sendQuorumLostAlert]
+? [ALERT] Node null detected quorum loss at 1765899551831. Current members: 2
+[2025-12-16 16:39:11][INFO   ] [Attempting to recover 1 process(es)...] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG lambda$0]
+[2025-12-16 16:39:11][INFO   ] [Attempting to recover 1 process(es)...] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG lambda$0]
+[2025-12-16 16:39:11][INFO   ] [Joined cluster clusterBank with address LAPTOP-NYLI1-43682] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG <init>] 
+[2025-12-16 16:39:11][INFO   ] [Joined cluster clusterBank with address LAPTOP-NYLI1-43682] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG <init>]
+[2025-12-16 16:39:11][FINEST ] [Invocation to getState] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG getState]
+[2025-12-16 16:39:11][FINEST ] [Invocation to setState] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG setState] 
+createBank
+
+received state ( messages in chat history):
+>>> Enter option: 1) Put. 2) Get. 3) Remove. 4) Update  5) Values 7) Init 0) Exit
+[2025-12-16 16:39:12][INFO   ] [Recovery attempt 2/2] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG lambda$0] 
+[2025-12-16 16:39:12][INFO   ] [Recovery attempt 2/2] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG lambda$0] 
+[2025-12-16 16:39:13][INFO   ] [Spawning new process: C:\Program Files\Java\jdk-23/bin/java -cp bin;lib\jgroups-5.0.0.Final.jar -Djava.net.preferIPv4Stack=true -Djgroups.bind_addr=127.0.0.1 es.upm.dit.cnvr_fcon.bank_2025.bank.MainBank BankCluster] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG launchNewBankProcess]
+[2025-12-16 16:39:13][INFO   ] [Spawning new process: C:\Program Files\Java\jdk-23/bin/java -cp bin;lib\jgroups-5.0.0.Final.jar -Djava.net.preferIPv4Stack=true -Djgroups.bind_addr=127.0.0.1 es.upm.dit.cnvr_fcon.bank_2025.bank.MainBank BankCluster] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG launchNewBankProcess]
+[2025-12-16 16:39:13][INFO   ] [New process started with PID: 11364] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG launchNewBankProcess]
+[2025-12-16 16:39:13][INFO   ] [New process started with PID: 11364] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG launchNewBankProcess]
+[2025-12-16 16:39:13][INFO   ] [? New process launched successfully] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG lambda$0]
+[2025-12-16 16:39:13][INFO   ] [? New process launched successfully] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG lambda$0]
+[2025-12-16 16:39:13][INFO   ] [Using JGroups UDP configuration with optimized fault detection] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG <init>] 
+[2025-12-16 16:39:13][INFO   ] [Using JGroups UDP configuration with optimized fault detection] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG <init>] 
+[2025-12-16 16:39:13][INFO   ] [local_addr: 4c331b53-aac7-1076-a2e4-b3ae0d3635e6, name: LAPTOP-NYLI1-24657] [org.jgroups.JChannel setAddress] 
+
+-------------------------------------------------------------------
+GMS: address=LAPTOP-NYLI1-24657, cluster=clusterBank, physical address=127.0.0.1:49669
+-------------------------------------------------------------------
+[2025-12-16 16:39:13][INFO   ] [Recovery attempt 1/1] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG lambda$0] 
+[2025-12-16 16:39:13][INFO   ] [Recovery attempt 1/1] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG lambda$0]
+[2025-12-16 16:39:13][INFO   ] [Spawning new process: C:\Program Files\Java\jdk-23/bin/java -cp bin;lib\jgroups-5.0.0.Final.jar -Djava.net.preferIPv4Stack=true -Djgroups.bind_addr=127.0.0.1 es.upm.dit.cnvr_fcon.bank_2025.bank.MainBank BankCluster] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG launchNewBankProcess]
+[2025-12-16 16:39:13][INFO   ] [Spawning new process: C:\Program Files\Java\jdk-23/bin/java -cp bin;lib\jgroups-5.0.0.Final.jar -Djava.net.preferIPv4Stack=true -Djgroups.bind_addr=127.0.0.1 es.upm.dit.cnvr_fcon.bank_2025.bank.MainBank BankCluster] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG launchNewBankProcess]
+[2025-12-16 16:39:13][INFO   ] [New process started with PID: 20680] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG launchNewBankProcess]
+[2025-12-16 16:39:13][INFO   ] [New process started with PID: 20680] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG launchNewBankProcess]
+[2025-12-16 16:39:13][INFO   ] [? New process launched successfully] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG lambda$0]
+[2025-12-16 16:39:13][INFO   ] [? New process launched successfully] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG lambda$0]
+** view: [LAPTOP-NYLI1-13482|2] (3) [LAPTOP-NYLI1-13482, LAPTOP-NYLI1-43682, LAPTOP-NYLI1-24657]
+[2025-12-16 16:39:13][INFO   ] [Current view size: 3 / Required quorum: 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:39:13][INFO   ] [Current view size: 3 / Required quorum: 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:39:13][INFO   ] [? Quorum maintained: 3 >= 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:39:13][INFO   ] [? Quorum maintained: 3 >= 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+** view: [LAPTOP-NYLI1-13482|2] (3) [LAPTOP-NYLI1-13482, LAPTOP-NYLI1-43682, LAPTOP-NYLI1-24657]
+[2025-12-16 16:39:13][INFO   ] [Current view size: 3 / Required quorum: 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:39:13][INFO   ] [Current view size: 3 / Required quorum: 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:39:13][INFO   ] [? Quorum maintained: 3 >= 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:39:13][INFO   ] [? Quorum maintained: 3 >= 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:39:13][INFO   ] [? Quorum already restored (3 >= 3). Stopping recovery.] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG lambda$0] 
+[2025-12-16 16:39:13][INFO   ] [? Quorum already restored (3 >= 3). Stopping recovery.] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG lambda$0]
+** view: [LAPTOP-NYLI1-13482|2] (3) [LAPTOP-NYLI1-13482, LAPTOP-NYLI1-43682, LAPTOP-NYLI1-24657]
+[2025-12-16 16:39:13][INFO   ] [Current view size: 3 / Required quorum: 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:39:13][INFO   ] [Current view size: 3 / Required quorum: 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:39:13][INFO   ] [? Quorum maintained: 3 >= 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:39:13][INFO   ] [? Quorum maintained: 3 >= 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:39:13][INFO   ] [Joined cluster clusterBank with address LAPTOP-NYLI1-24657] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG <init>] 
+[2025-12-16 16:39:13][INFO   ] [Joined cluster clusterBank with address LAPTOP-NYLI1-24657] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG <init>]
+[2025-12-16 16:39:13][FINEST ] [Invocation to getState] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG getState]
+[2025-12-16 16:39:13][FINEST ] [Invocation to setState] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG setState] 
+createBank
+
+received state ( messages in chat history):
+>>> Enter option: 1) Put. 2) Get. 3) Remove. 4) Update  5) Values 7) Init 0) Exit
+[2025-12-16 16:39:14][INFO   ] [Using JGroups UDP configuration with optimized fault detection] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG <init>] 
+[2025-12-16 16:39:14][INFO   ] [Using JGroups UDP configuration with optimized fault detection] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG <init>] 
+[2025-12-16 16:39:14][INFO   ] [local_addr: 8bd8a0bc-2409-71e1-1584-0cec2fc45290, name: LAPTOP-NYLI1-17349] [org.jgroups.JChannel setAddress] 
+
+-------------------------------------------------------------------
+GMS: address=LAPTOP-NYLI1-17349, cluster=clusterBank, physical address=127.0.0.1:49671
+-------------------------------------------------------------------
+** view: [LAPTOP-NYLI1-13482|3] (4) [LAPTOP-NYLI1-13482, LAPTOP-NYLI1-43682, LAPTOP-NYLI1-24657, LAPTOP-NYLI1-17349]
+[2025-12-16 16:39:14][INFO   ] [Current view size: 4 / Required quorum: 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:39:14][INFO   ] [Current view size: 4 / Required quorum: 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:39:14][INFO   ] [? Quorum maintained: 4 >= 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:39:14][INFO   ] [? Quorum maintained: 4 >= 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+** view: [LAPTOP-NYLI1-13482|3] (4) [LAPTOP-NYLI1-13482, LAPTOP-NYLI1-43682, LAPTOP-NYLI1-24657, LAPTOP-NYLI1-17349]
+** view: [LAPTOP-NYLI1-13482|3] (4) [LAPTOP-NYLI1-13482, LAPTOP-NYLI1-43682, LAPTOP-NYLI1-24657, LAPTOP-NYLI1-17349]
+[2025-12-16 16:39:14][INFO   ] [Current view size: 4 / Required quorum: 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:39:14][INFO   ] [Current view size: 4 / Required quorum: 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:39:14][INFO   ] [? Quorum maintained: 4 >= 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted] 
+[2025-12-16 16:39:14][INFO   ] [Current view size: 4 / Required quorum: 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:39:14][INFO   ] [Current view size: 4 / Required quorum: 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:39:14][INFO   ] [? Quorum maintained: 4 >= 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:39:14][INFO   ] [? Quorum maintained: 4 >= 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:39:14][INFO   ] [? Quorum maintained: 4 >= 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+** view: [LAPTOP-NYLI1-13482|3] (4) [LAPTOP-NYLI1-13482, LAPTOP-NYLI1-43682, LAPTOP-NYLI1-24657, LAPTOP-NYLI1-17349]
+[2025-12-16 16:39:14][INFO   ] [Current view size: 4 / Required quorum: 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted] 
+[2025-12-16 16:39:14][INFO   ] [Current view size: 4 / Required quorum: 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:39:14][INFO   ] [? Quorum maintained: 4 >= 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:39:14][INFO   ] [? Quorum maintained: 4 >= 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:39:14][INFO   ] [Joined cluster clusterBank with address LAPTOP-NYLI1-17349] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG <init>]
+[2025-12-16 16:39:14][INFO   ] [Joined cluster clusterBank with address LAPTOP-NYLI1-17349] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG <init>]
+[2025-12-16 16:39:14][FINEST ] [Invocation to getState] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG getState] 
+[2025-12-16 16:39:14][FINEST ] [Invocation to setState] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG setState]
+createBank
+
+received state ( messages in chat history):
+>>> Enter option: 1) Put. 2) Get. 3) Remove. 4) Update  5) Values 7) Init 0) Exit
+5
+List of values in the bank: 
+
+>>> Enter option: 1) Put. 2) Get. 3) Remove. 4) Update  5) Values 7) Init 0) Exit
+7** view: [LAPTOP-NYLI1-13482|4] (5) [LAPTOP-NYLI1-13482, LAPTOP-NYLI1-43682, LAPTOP-NYLI1-24657, LAPTOP-NYLI1-17349, LAPTOP-NYLI1-63268]
+[2025-12-16 16:40:02][INFO   ] [Current view size: 5 / Required quorum: 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted] 
+[2025-12-16 16:40:02][INFO   ] [Current view size: 5 / Required quorum: 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:40:02][INFO   ] [? Quorum maintained: 5 >= 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:40:02][INFO   ] [? Quorum maintained: 5 >= 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+** view: [LAPTOP-NYLI1-13482|4] (5) [LAPTOP-NYLI1-13482, LAPTOP-NYLI1-43682, LAPTOP-NYLI1-24657, LAPTOP-NYLI1-17349, LAPTOP-NYLI1-63268]
+** view: [LAPTOP-NYLI1-13482|4] (5) [LAPTOP-NYLI1-13482, LAPTOP-NYLI1-43682, LAPTOP-NYLI1-24657, LAPTOP-NYLI1-17349, LAPTOP-NYLI1-63268]
+** view: [LAPTOP-NYLI1-13482|4] (5) [LAPTOP-NYLI1-13482, LAPTOP-NYLI1-43682, LAPTOP-NYLI1-24657, LAPTOP-NYLI1-17349, LAPTOP-NYLI1-63268]
+[2025-12-16 16:40:02][INFO   ] [Current view size: 5 / Required quorum: 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:40:02][INFO   ] [Current view size: 5 / Required quorum: 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:40:02][INFO   ] [Current view size: 5 / Required quorum: 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:40:02][INFO   ] [Current view size: 5 / Required quorum: 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:40:02][INFO   ] [Current view size: 5 / Required quorum: 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:40:02][INFO   ] [? Quorum maintained: 5 >= 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:40:02][INFO   ] [Current view size: 5 / Required quorum: 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:40:02][INFO   ] [? Quorum maintained: 5 >= 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:40:02][INFO   ] [? Quorum maintained: 5 >= 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:40:02][INFO   ] [? Quorum maintained: 5 >= 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:40:02][INFO   ] [? Quorum maintained: 5 >= 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:40:02][INFO   ] [? Quorum maintained: 5 >= 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:40:02][FINEST ] [Invocation to getState] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG getState] 
+** view: [LAPTOP-NYLI1-13482|5] (4) [LAPTOP-NYLI1-13482, LAPTOP-NYLI1-43682, LAPTOP-NYLI1-24657, LAPTOP-NYLI1-17349]
+[2025-12-16 16:40:31][INFO   ] [Current view size: 4 / Required quorum: 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted] 
+[2025-12-16 16:40:31][INFO   ] [Current view size: 4 / Required quorum: 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:40:31][INFO   ] [? Quorum maintained: 4 >= 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:40:31][INFO   ] [? Quorum maintained: 4 >= 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+** view: [LAPTOP-NYLI1-13482|5] (4) [LAPTOP-NYLI1-13482, LAPTOP-NYLI1-43682, LAPTOP-NYLI1-24657, LAPTOP-NYLI1-17349]
+** view: [LAPTOP-NYLI1-13482|5] (4) [LAPTOP-NYLI1-13482, LAPTOP-NYLI1-43682, LAPTOP-NYLI1-24657, LAPTOP-NYLI1-17349]
+** view: [LAPTOP-NYLI1-13482|5] (4) [LAPTOP-NYLI1-13482, LAPTOP-NYLI1-43682, LAPTOP-NYLI1-24657, LAPTOP-NYLI1-17349]
+[2025-12-16 16:40:31][INFO   ] [Current view size: 4 / Required quorum: 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:40:31][INFO   ] [Current view size: 4 / Required quorum: 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:40:31][INFO   ] [Current view size: 4 / Required quorum: 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:40:31][INFO   ] [Current view size: 4 / Required quorum: 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:40:31][INFO   ] [Current view size: 4 / Required quorum: 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:40:31][INFO   ] [Current view size: 4 / Required quorum: 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:40:31][INFO   ] [? Quorum maintained: 4 >= 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:40:31][INFO   ] [? Quorum maintained: 4 >= 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:40:31][INFO   ] [? Quorum maintained: 4 >= 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:40:31][INFO   ] [? Quorum maintained: 4 >= 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:40:31][INFO   ] [? Quorum maintained: 4 >= 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+[2025-12-16 16:40:31][INFO   ] [? Quorum maintained: 4 >= 3] [es.upm.dit.cnvr_fcon.bank_2025.common.NodeJG viewAccepted]
+
+

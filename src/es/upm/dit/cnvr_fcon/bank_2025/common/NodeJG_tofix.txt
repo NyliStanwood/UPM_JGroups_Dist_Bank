@@ -14,6 +14,7 @@ import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -35,7 +36,7 @@ import java.util.logging.Logger;
  * @author aalonso
  * @since 2025/11/12
  */
-public class NodeJG implements Receiver {
+public class NodeJG_tofix implements Receiver {
 
 	// private static final long serialVersionUID = 1L;
 
@@ -57,11 +58,16 @@ public class NodeJG implements Receiver {
 
 	private ProcessMsgBank processMsg;
 
-	// Fault tolerance configuration flags
+	// Fault tolerance configuration flags (override via system properties or env)
 	private static final boolean DETECT_MIN_QUORUM = true;
-	private static final boolean CREATE_PROCESS_AUTOMATICALLY = true;
-	private static final int QUORUM = 3;
+	private static final boolean AUTO_BOOTSTRAP = getBooleanSetting("bank.autoBootstrap", "BANK_AUTO_BOOTSTRAP", true);
+	private static final boolean AUTO_RECOVERY = getBooleanSetting("bank.autoRecovery", "BANK_AUTO_RECOVERY", true);
+	private static final int QUORUM = getIntSetting("bank.quorum", "BANK_QUORUM", 3);
 	private volatile int currentViewSize = 1;
+
+	// Coordinates recovery so we do not spawn duplicates
+	private final Object recoveryLock = new Object();
+	private final AtomicBoolean recoveryInProgress = new AtomicBoolean(false);
 
 	/**
 	 * The constructor. It adds the process to the group, by connecting to a
@@ -75,15 +81,15 @@ public class NodeJG implements Receiver {
 		// for having information from remote nodes
 		try {
 
-// 1. Crear el canal JGroups usando configuración XML para fault tolerance
-		// Usar UDP para mejor rendimiento en localhost
-		try {
-			channel = new JChannel("resources/jgroups-udp.xml");
-			LOGGER.info("Using JGroups UDP configuration with optimized fault detection");
-		} catch (Exception xmlError) {
-			LOGGER.warning("Failed to load XML config, using default: " + xmlError.getMessage());
-			channel = new JChannel();
-		}
+			// 1. Crear el canal JGroups usando configuración XML para fault tolerance
+			// Usar UDP para mejor rendimiento en localhost
+			try {
+				channel = new JChannel("resources/jgroups-udp.xml");
+				LOGGER.info("Using JGroups UDP configuration with optimized fault detection");
+			} catch (Exception xmlError) {
+				LOGGER.warning("Failed to load XML config, using default: " + xmlError.getMessage());
+				channel = new JChannel();
+			}
 
 			// 2. Este objeto (NodeJG) será el receptor de mensajes y de estado
 			channel.setReceiver(this);
@@ -116,6 +122,15 @@ public class NodeJG implements Receiver {
 			// this.channel.getState(null, 10000);
 			// 8. Pedir el estado actual al cluster (si ya hay algún nodo)
 			channel.getState(null, 10000);
+
+			// 9. Ensure we start with the minimum quorum by bootstrapping missing nodes if
+			// enabled
+			currentViewSize = channel.getView().getMembers().size();
+			if (AUTO_BOOTSTRAP && currentViewSize < QUORUM) {
+				int missing = QUORUM - currentViewSize;
+				LOGGER.info("Bootstrap: launching " + missing + " process(es) to reach quorum at startup");
+				scheduleProcessRecovery("startup bootstrap", missing, AUTO_BOOTSTRAP);
+			}
 		} catch (Exception e) {
 			System.out.println("Error get the State");
 			e.printStackTrace();
@@ -143,12 +158,12 @@ public class NodeJG implements Receiver {
 				LOGGER.warning("⚠️  QUORUM LOST! Current: " + currentViewSize + " < Required: " + QUORUM);
 				LOGGER.warning("System integrity compromised. Attempting recovery...");
 
-				if (CREATE_PROCESS_AUTOMATICALLY) {
+				if (AUTO_RECOVERY) {
 					// Send alert message to all nodes
 					sendQuorumLostAlert();
 
 					// Schedule automatic process recovery
-					scheduleProcessRecovery();
+					scheduleProcessRecovery("quorum loss", QUORUM - currentViewSize, AUTO_RECOVERY);
 				}
 			} else {
 				LOGGER.info("✓ Quorum maintained: " + currentViewSize + " >= " + QUORUM);
@@ -173,39 +188,46 @@ public class NodeJG implements Receiver {
 	/**
 	 * Schedules automatic process recovery when quorum is lost
 	 */
-	private void scheduleProcessRecovery() {
-		if (!CREATE_PROCESS_AUTOMATICALLY) {
+	private void scheduleProcessRecovery(String reason, int missingProcesses, boolean autoEnabled) {
+		if (!autoEnabled || missingProcesses <= 0) {
 			return;
+		}
+
+		synchronized (recoveryLock) {
+			if (recoveryInProgress.get()) {
+				LOGGER.info("Recovery already in progress; skipping new request for " + reason);
+				return;
+			}
+			recoveryInProgress.set(true);
 		}
 
 		// Run recovery in a separate thread to avoid blocking the receiver thread
 		Thread recoveryThread = new Thread(() -> {
 			try {
-				int missingProcesses = QUORUM - currentViewSize;
-				LOGGER.info("Attempting to recover " + missingProcesses + " process(es)...");
+				LOGGER.info("Attempting to recover " + missingProcesses + " process(es) due to " + reason + "...");
 
 				for (int i = 0; i < missingProcesses; i++) {
-					Thread.sleep(2000); // Wait 2 seconds between process launches
-					// Check if quorum was restored during the wait
 					if (currentViewSize >= QUORUM) {
 						LOGGER.info("✓ Quorum already restored (" + currentViewSize + " >= " + QUORUM
 								+ "). Stopping recovery.");
 						break;
 					}
+
 					int attempt = i + 1;
 					LOGGER.info("Recovery attempt " + attempt + "/" + missingProcesses);
+					launchNewBankProcess();
+					LOGGER.info("✓ New process launched successfully");
 
-					// Launch new process in a separate JVM
-					try {
-						launchNewBankProcess();
-						LOGGER.info("✓ New process launched successfully");
-					} catch (Exception e) {
-						LOGGER.severe("✗ Failed to launch new process: " + e.getMessage());
-					}
+					// Give time for the new node to join and update the view
+					Thread.sleep(2000);
 				}
 			} catch (InterruptedException e) {
 				Thread.currentThread().interrupt();
 				LOGGER.severe("Recovery thread interrupted: " + e.getMessage());
+			} catch (Exception e) {
+				LOGGER.severe("✗ Failed to launch new process: " + e.getMessage());
+			} finally {
+				recoveryInProgress.set(false);
 			}
 		}, "ProcessRecoveryThread");
 
@@ -394,9 +416,35 @@ public class NodeJG implements Receiver {
 	/**
 	 * FAULT TOLERANCE: Check if automatic recovery is enabled
 	 * 
-	 * @return true if CREATE_PROCESS_AUTOMATICALLY flag is set
+	 * @return true if AUTO_RECOVERY flag is set
 	 */
 	public boolean isAutoRecoveryEnabled() {
-		return CREATE_PROCESS_AUTOMATICALLY;
+		return AUTO_RECOVERY;
+	}
+
+	private static boolean getBooleanSetting(String sysProp, String envVar, boolean defaultValue) {
+		String value = System.getProperty(sysProp);
+		if (value == null) {
+			value = System.getenv(envVar);
+		}
+		if (value == null) {
+			return defaultValue;
+		}
+		return value.equalsIgnoreCase("true") || value.equalsIgnoreCase("1") || value.equalsIgnoreCase("yes");
+	}
+
+	private static int getIntSetting(String sysProp, String envVar, int defaultValue) {
+		String value = System.getProperty(sysProp);
+		if (value == null) {
+			value = System.getenv(envVar);
+		}
+		if (value == null) {
+			return defaultValue;
+		}
+		try {
+			return Integer.parseInt(value);
+		} catch (NumberFormatException e) {
+			return defaultValue;
+		}
 	}
 }

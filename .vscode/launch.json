@@ -19,6 +19,17 @@
       "vmArgs": "-Djava.net.preferIPv4Stack=true -Djgroups.bind_addr=127.0.0.1",
       "args": "BankCluster",
       "preLaunchTask": "compile-bank"
+    },
+    {
+      "type": "java",
+      "name": "Launch Bank (Optimized XML Config)",
+      "request": "launch",
+      "mainClass": "es.upm.dit.cnvr_fcon.bank_2025.bank.MainBank",
+      "projectName": "2025_Bank_Dist_TBD",
+      "vmArgs": "-Djava.net.preferIPv4Stack=true -Djgroups.bind_addr=127.0.0.1",
+      "args": "BankCluster",
+      "preLaunchTask": "compile-bank",
+      "console": "integratedTerminal"
     }
   ]
 }

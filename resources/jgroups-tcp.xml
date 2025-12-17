@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns="urn:org:jgroups"
-  xsi:schemaLocation="urn:org:jgroups http://www.jgroups.org/schema/jgroups-5.3.xsd">
+  xsi:schemaLocation="urn:org:jgroups http://www.jgroups.org/schema/jgroups.xsd">
 
   <!-- TCP Transport Layer -->
   <TCP
@@ -22,8 +22,20 @@
     num_initial_members="3"
   />
 
-  <!-- Socket-based failure detection -->
-  <FD_SOCK />
+  <!-- Socket-based failure detection (optimized for fast detection) -->
+  <FD_SOCK 
+    bind_addr="${jgroups.bind_addr:127.0.0.1}"
+    start_port="9000"
+    port_range="100"
+    suspect_msg_interval="2000"
+  />
+
+  <!-- Heartbeat-based failure detection (backup) -->
+  <FD_ALL 
+    timeout="3000" 
+    interval="1000" 
+    timeout_check_interval="1000"
+  />
 
   <!-- Verify suspected failures -->
   <VERIFY_SUSPECT timeout="1500" />
@@ -31,21 +43,19 @@
   <!-- Synchronization barrier -->
   <BARRIER />
 
-  <!-- Group membership service -->
-  <GMS
+  <!-- Group membership service (optimized for fault tolerance) -->
+  <pbcast.GMS
     print_local_addr="true"
-    join_timeout="5000"
-    leave_timeout="5000"
+    join_timeout="3000"
+    leave_timeout="1000"
     view_bundling="true"
-    max_bundling_time="500"
-    resume_task_timeout="15000"
+    max_bundling_time="300"
+    resume_task_timeout="7000"
+    log_view_warnings="false"
   />
 
-  <!-- Ordered delivery before view changes -->
-  <FLUSH />
-
   <!-- Reliable multicast with FIFO and causal ordering -->
-  <NAKACK2
+  <pbcast.NAKACK2
     use_mcast_xmit="false"
     retransmit_timeout="100,200,300,600"
     max_retransmit_time="30000"
@@ -61,6 +71,6 @@
   />
 
   <!-- State transfer support -->
-  <STATE />
+  <pbcast.STATE_TRANSFER />
 
 </config>
